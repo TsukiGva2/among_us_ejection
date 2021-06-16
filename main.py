@@ -1,84 +1,35 @@
-import sys, random, pygame, os
-from SimpleDrawEngine import *
-from astronauts import *
+from tkinter import *
+import game
 
+root = Tk()
 
-## Limpador de tela multiplataforma Magoninho Gamer versão 1.2
-def limpa_tela():
-    os.system('cls' if os.name=='nt' else 'clear')
+root.geometry("800x600")
+root.title('Impostor detector')
+root.configure(background='black')
+img = PhotoImage(file="among-us-logo.png")
+lbl_img = Label(root, image=img, borderwidth=0).pack()
 
-limpa_tela()
+def color(color, name):
+    print(name)
+    game.pfn_main(color, name)
 
+Label(root, text='Custom name:\n', fg="white", background='black').pack()
+text_field = Text(root, height=1, width=12, insertbackground='white', bg='black', fg='white')
+text_field.pack()
+Label(root, text="\n", background='black').pack()
+text1 = Label(root, text="Select the character:", fg="white", background='black').pack()
+button1 = Button(root, text="  red   ", fg="red", background='black', borderwidth=0, command=lambda: color('red', text_field.get("1.0", 'end-1c')))
+button2 = Button(root, text="yellow", fg="yellow", background='black', borderwidth=0, command=lambda: color('yellow', text_field.get("1.0", 'end-1c')))
+button3 = Button(root, text=" green ", fg="lightgreen", background='black', borderwidth=0, command=lambda: color('green', text_field.get("1.0", 'end-1c')))
+button4 = Button(root, text="  cyan  ", fg="cyan", background='black', borderwidth=0, command=lambda: color('cyan', text_field.get("1.0", 'end-1c')))
 
-def main(color):
-	pygame.init()
+button1.pack()
+button2.pack()
+button3.pack()
+button4.pack()
 
-	N = 200
-	white = (255, 255, 255)
-	black = (0,0,0)
-	red = (255, 0, 0)
-	largura, altura = 800, 600
+"""
+muito gamer
+"""
 
-	screen = pygame.display.set_mode((largura, altura))
-	caption = pygame.display.set_caption("ALPHA")
-
-	# posisão das estrelas
-	## estrelas menores
-	stars = [
-		[random.randint(0, largura), random.randint(0, altura)] for x in range(N)
-	]
-	## estrelas grandes
-
-	big_stars = [
-		[random.randint(0, largura), random.randint(0, altura)] for x in range(50)
-	]
-
-
-	pygame.mixer.init()
-	pygame.mixer.music.load('sound.mp3')
-	pygame.mixer.music.play(-1)
-
-	clock = pygame.time.Clock()
-	file = color
-	## objetos
-	test = 45
-	pos_x = -360
-	vx = 10
-	angle = 0
-	while True:	
-		clock.tick(30)
-		player = Player(screen, ("characters/" + file + ".png"), (0, 0), angle, pos_x)
-		angle += 5
-		
-		
-		
-		for event in pygame.event.get():
-			if event.type == pygame.QUIT:
-				pygame.quit()
-				
-		screen.fill(black)
-
-
-		# Drawinings
-		## Stars
-		for star in stars:
-			Rect(screen, white, (star[0], star[1], 2, 2))
-			star[0] -= 0.5
-			if star[0] < 0:
-				star[0] = largura
-		for big_star in big_stars:
-			Circle(screen, white, (big_star[0], big_star[1]), 3)
-			big_star[0] -= 1
-			if big_star[0] < 0:
-				big_star[0] = largura
-		## Astronauts
-		player.animation()
-		
-		pos_x += vx
-		vx -= 0.035
-
-		if vx <= 0:
-			vx = 0
-		
-		## Update
-		pygame.display.flip()
+root.mainloop()
